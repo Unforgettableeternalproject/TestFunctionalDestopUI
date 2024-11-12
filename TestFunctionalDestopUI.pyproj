@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>90128910-d993-4c83-83de-aaaf49ce4ea8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>TestFunctionalDestopUI.py</StartupFile>
+    <StartupFile>Entry.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="TestFunctionalDestopUI.py" />
+    <Compile Include="Entry.py" />
+    <Compile Include="sys_module\file.py" />
+    <Compile Include="ui_module\list.py" />
+    <Compile Include="ui_module\main.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="sys_module\" />
+    <Folder Include="ui_module\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
