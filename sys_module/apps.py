@@ -38,8 +38,15 @@ def is_executable(file):
 def find_application_path(app_name):
     # Check if the app path is already known
     if app_name in app_paths:
-        return app_paths[app_name]
-    
+        saved_path = app_paths[app_name]
+        if os.path.exists(saved_path) and is_executable(saved_path):
+            return saved_path
+        else:
+            # Remove invalid path
+            del app_paths[app_name]
+            save_app_paths()
+            print(f"Saved path for '{app_name}' is invalid and has been removed. Searching again...")
+
     # Use known app keywords to try for an exact name
     lookup_name = KNOWN_APPS.get(app_name.lower(), app_name)
 

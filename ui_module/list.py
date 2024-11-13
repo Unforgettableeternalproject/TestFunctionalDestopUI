@@ -77,7 +77,10 @@ class FunctionList:
         self._animate(0, 0, 400, 600)
 
     def animate_close(self):
-        self._animate(400, 600, 0, 0, self.close_function_list)
+        try:
+            self._animate(400, 600, 0, 0, self.close_function_list)
+        except:
+            self.close_function_list()
 
     def _animate(self, start_width, start_height, end_width, end_height, callback=None):
         step = 10
