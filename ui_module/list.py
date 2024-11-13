@@ -1,29 +1,41 @@
 import tkinter as tk
-from sys_module.file import create_file_folder
+from sys_module.file import create_file_folder, search_files
 
 class FunctionList:
     def __init__(self, root, on_close_callback):
         self.root = root
         self.on_close_callback = on_close_callback
+        self.is_busy = False
+
         self.function_window = tk.Toplevel(root)
         self.function_window.geometry("400x600")
+        # self.function_window.attributes('-topmost', True) 
         self.function_window.attributes('-alpha', 0.8)  # Slight transparency
         self.function_window.overrideredirect(True)  # Remove window decorations
         self.function_window.transient(root)  # Keep it above the main window
-        self.function_window.grab_set()  # Make it modal
 
         # Center the window
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
-        self.function_window.geometry(f"+{screen_width//2 - 200}+{screen_height//2 - 300}")
+        self.center_x = screen_width // 2
+        self.center_y = screen_height // 2
+        self.function_window.geometry(f"+{self.center_x - 200}+{self.center_y - 300}")
 
-        # Exit button in the top-right corner of the function window
-        exit_button = tk.Button(self.function_window, text="X", command=self.close_function_list, bg="red", fg="white")
-        exit_button.place(x=370, y=10)
+        # Create a frame for the content
+        self.content_frame = tk.Frame(self.function_window, bg="#333333")
+        self.content_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Button for creating a file/folder
-        create_file_button = tk.Button(self.function_window, text="Create File/Folder", command=lambda: create_file_folder(self.function_window))
-        create_file_button.pack(pady=50)
+        # Add a title
+        title_label = tk.Label(self.content_frame, text="Function List", bg="#333333", fg="white", font=("Arial", 16))
+        title_label.pack(pady=10)
+
+        # Create a panel for the functions
+        self.function_panel = tk.Frame(self.content_frame, bg="#444444")
+        self.function_panel.pack(fill="both", expand=True, pady=10)
+
+        # Add sample functions
+        self.add_function("Create File/Folder", create_file_folder)
+        self.add_function("Search Files", search_files)
 
         # Force the window to appear on top
         self.function_window.lift()
@@ -37,6 +49,9 @@ class FunctionList:
         self.function_window.bind("<Button-1>", self.start_drag)
         self.function_window.bind("<B1-Motion>", self.on_drag)
 
+        # Bind focus out event
+        self.function_window.bind("<FocusOut>", self.on_focus_out)
+
     def start_drag(self, event):
         self.offset_x = event.x
         self.offset_y = event.y
@@ -46,11 +61,62 @@ class FunctionList:
         y = self.function_window.winfo_y() + event.y - self.offset_y
         self.function_window.geometry(f"+{x}+{y}")
 
+    def on_focus_out(self, event):
+        if not self.is_busy:
+                self.animate_close()
+
+    def animate_open(self):
+        self.function_window.geometry("0x0")
+        self._animate(0, 0, 400, 600)
+
+    def animate_close(self):
+        self._animate(400, 600, 0, 0, self.close_function_list)
+
+    def _animate(self, start_width, start_height, end_width, end_height, callback=None):
+        step = 10
+        width_diff = (end_width - start_width) // step
+        height_diff = (end_height - start_height) // step
+
+        def animate_step(current_step):
+            if current_step <= step:
+                new_width = start_width + width_diff * current_step
+                new_height = start_height + height_diff * current_step
+                new_x = self.center_x - new_width // 2
+                new_y = self.center_y - new_height // 2
+                self.function_window.geometry(f"{new_width}x{new_height}+{new_x}+{new_y}")
+                self.root.after(10, animate_step, current_step + 1)
+            else:
+                if callback:
+                    callback()
+
+        animate_step(0)
+
     def close_function_list(self):
-        self.function_window.grab_release()  # Release modal behavior
         self.function_window.destroy()  # Close the window
         self.on_close_callback()  # Re-enable the "Activate" button in the main window
 
-# 在 main.py 中可以這樣調用
-# from list import FunctionList
-# function_list = FunctionList(root, on_close_callback)
+    def add_function(self, label_text, command):
+        function_frame = tk.Frame(self.function_panel, bg="#555555", pady=5)
+        function_frame.pack(fill="x", pady=5)
+
+        label = tk.Label(function_frame, text=label_text, bg="#555555", fg="white", font=("Arial", 12))
+        label.pack(side="left", padx=10)
+
+        button = tk.Button(function_frame, text="Invoke", command=lambda: self.invoke_function(command), bg="#4CAF50", fg="white")
+        button.pack(side="right", padx=10)
+
+    def invoke_function(self, command):
+        self.is_busy = True
+        command(self.function_window)
+        self.is_busy = False
+
+# Example usage
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+
+    def on_close():
+        print("Function list window closed")
+
+    function_list = FunctionList(root, on_close)
+    root.mainloop()
