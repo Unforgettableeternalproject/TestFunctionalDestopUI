@@ -1,15 +1,17 @@
 import tkinter as tk
 from sys_module.file import create_file_folder, search_files
+from sys_module.apps import open_application, close_application
 
 class FunctionList:
     def __init__(self, root, on_close_callback):
         self.root = root
         self.on_close_callback = on_close_callback
         self.is_busy = False
+        self.closing = False
 
         self.function_window = tk.Toplevel(root)
         self.function_window.geometry("400x600")
-        # self.function_window.attributes('-topmost', True) 
+        self.function_window.attributes('-topmost', True) 
         self.function_window.attributes('-alpha', 0.8)  # Slight transparency
         self.function_window.overrideredirect(True)  # Remove window decorations
         self.function_window.transient(root)  # Keep it above the main window
@@ -36,6 +38,9 @@ class FunctionList:
         # Add sample functions
         self.add_function("Create File/Folder", create_file_folder)
         self.add_function("Search Files", search_files)
+        self.add_function("Open Application", open_application)
+        self.add_function("Close Application", close_application)
+
 
         # Force the window to appear on top
         self.function_window.lift()
@@ -63,7 +68,9 @@ class FunctionList:
 
     def on_focus_out(self, event):
         if not self.is_busy:
-                self.animate_close()
+            self.function_window.attributes('-topmost', True)
+            self.function_window.after(100, self.animate_close())
+            self.function_window.attributes('-topmost', False)
 
     def animate_open(self):
         self.function_window.geometry("0x0")
@@ -92,8 +99,10 @@ class FunctionList:
         animate_step(0)
 
     def close_function_list(self):
-        self.function_window.destroy()  # Close the window
-        self.on_close_callback()  # Re-enable the "Activate" button in the main window
+        if not self.closing:
+            self.closing = True
+            self.function_window.destroy()  # Close the window
+            self.on_close_callback()  # Re-enable the "Activate" button in the main window
 
     def add_function(self, label_text, command):
         function_frame = tk.Frame(self.function_panel, bg="#555555", pady=5)
@@ -106,17 +115,8 @@ class FunctionList:
         button.pack(side="right", padx=10)
 
     def invoke_function(self, command):
+        self.function_window.attributes('-topmost', False) 
         self.is_busy = True
         command(self.function_window)
         self.is_busy = False
-
-# Example usage
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.withdraw()  # Hide the root window
-
-    def on_close():
-        print("Function list window closed")
-
-    function_list = FunctionList(root, on_close)
-    root.mainloop()
+        self.function_window.attributes('-topmost', True) 

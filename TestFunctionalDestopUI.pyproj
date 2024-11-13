@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entry.py" />
+    <Compile Include="sys_module\apps.py" />
     <Compile Include="sys_module\file.py" />
     <Compile Include="ui_module\list.py" />
     <Compile Include="ui_module\main.py" />
@@ -32,7 +33,9 @@
     <Folder Include="ui_module\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".env" />
     <Content Include=".gitignore" />
+    <Content Include="app_paths.json" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
   </ItemGroup>

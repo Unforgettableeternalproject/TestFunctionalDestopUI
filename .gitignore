@@ -364,7 +364,9 @@ FodyWeavers.xsd
 
 # Virtual Environments
 env/
+.env
 
 # Local files
 *.txt
 !requirements.txt
+*.json

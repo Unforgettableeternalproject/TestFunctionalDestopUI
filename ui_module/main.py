@@ -4,7 +4,7 @@ from .list import FunctionList
 class MainApp:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.geometry("200x100") 
+        self.root.geometry("200x120") 
         self.root.attributes('-alpha', 0.8) 
         self.root.attributes('-topmost', True) 
         self.root.overrideredirect(True) 
@@ -21,6 +21,9 @@ class MainApp:
 
         self.activate = tk.Button(self.frame, text="Activate", command=self.toggle_function_list, bg="#4CAF50", fg="white", relief="flat")
         self.activate.pack(pady=20)
+        
+        self.terminate = tk.Button(self.frame, text="Terminate", command=self.root.destroy, bg="#f44336", fg="white", relief="flat")
+        self.terminate.pack(pady=10)
 
         self.function_list = None
 

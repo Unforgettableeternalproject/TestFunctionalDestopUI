@@ -1,5 +1,4 @@
 ﻿import platform
-import tkinter as tk
 from tkinter import simpledialog
 import os
 import fnmatch
@@ -25,6 +24,8 @@ def create_file_folder(parent):
 
 def search_files(parent):
     filename = simpledialog.askstring("Search Files", "Enter the base name or pattern of the file to search for:", parent=parent)
+    if not filename: return None
+    
     search_path = simpledialog.askstring("Search Path", "Enter the root directory to start searching from (default is root '/'): ", parent=parent) or "/"
     output_file = simpledialog.askstring("Output File", "Enter the name of the output file to save search results (default is 'search_results.txt'):", parent=parent) or "search_results.txt"
 
@@ -48,7 +49,7 @@ def search_files(parent):
                 results.append(os.path.join(root, name))
 
     # Write results to the output file
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         if results:
             f.write("Search Results:\n")
             for i, file_path in enumerate(results):
@@ -67,4 +68,4 @@ def search_files(parent):
     elif platform.system() == "Linux":  # Linux
         os.system(f"xdg-open {output_file}")
     else:
-        print("Unsupported operating system.")      
+        print("Unsupported operating system.")
