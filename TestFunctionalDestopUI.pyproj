@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="Entry.py" />
     <Compile Include="sys_module\apps.py" />
+    <Compile Include="sys_module\categorization.py" />
     <Compile Include="sys_module\clipboard.py" />
     <Compile Include="sys_module\file.py" />
     <Compile Include="ui_module\list.py" />

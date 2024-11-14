@@ -13,7 +13,7 @@ class FunctionList:
         self.function_window = tk.Toplevel(root)
         self.function_window.geometry("400x600")
         self.function_window.attributes('-topmost', True) 
-        self.function_window.attributes('-alpha', 0.8)  # Slight transparency
+        self.function_window.attributes('-alpha', 0.9)  # Slight transparency
         self.function_window.overrideredirect(True)  # Remove window decorations
         self.function_window.transient(root)  # Keep it above the main window
 
