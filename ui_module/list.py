@@ -1,6 +1,7 @@
 import tkinter as tk
 from sys_module.file import create_file_folder, search_files
 from sys_module.apps import open_application, close_application
+from sys_module.clipboard import search_clipboard, remove_clipboard_history
 
 class FunctionList:
     def __init__(self, root, on_close_callback):
@@ -40,7 +41,8 @@ class FunctionList:
         self.add_function("Search Files", search_files)
         self.add_function("Open Application", open_application)
         self.add_function("Close Application", close_application)
-
+        self.add_function("Search Clipboard", search_clipboard)
+        self.add_function("Remove Clipboard History", remove_clipboard_history)
 
         # Force the window to appear on top
         self.function_window.lift()
@@ -93,8 +95,11 @@ class FunctionList:
                 new_height = start_height + height_diff * current_step
                 new_x = self.center_x - new_width // 2
                 new_y = self.center_y - new_height // 2
-                self.function_window.geometry(f"{new_width}x{new_height}+{new_x}+{new_y}")
-                self.root.after(10, animate_step, current_step + 1)
+                if self.function_window.winfo_exists():
+                    self.function_window.geometry(f"{new_width}x{new_height}+{new_x}+{new_y}")
+                    self.root.after(10, animate_step, current_step + 1)
+                else:
+                    print("Window does not exist")
             else:
                 if callback:
                     callback()
@@ -122,4 +127,5 @@ class FunctionList:
         self.is_busy = True
         command(self.function_window)
         self.is_busy = False
-        self.function_window.attributes('-topmost', True) 
+        self.root.focus_force()
+        self.function_window.attributes('-topmost', True)

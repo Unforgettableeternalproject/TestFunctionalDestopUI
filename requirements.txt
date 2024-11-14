@@ -1,1 +1,7 @@
-tqdm
+colorama==0.4.6
+pip==23.0.1
+psutil==6.1.0
+python-dotenv==1.0.1
+pywin32==308
+setuptools==65.5.0
+tqdm==4.67.0

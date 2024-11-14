@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="Entry.py" />
     <Compile Include="sys_module\apps.py" />
+    <Compile Include="sys_module\clipboard.py" />
     <Compile Include="sys_module\file.py" />
     <Compile Include="ui_module\list.py" />
     <Compile Include="ui_module\main.py" />
@@ -36,6 +37,7 @@
     <Content Include=".env" />
     <Content Include=".gitignore" />
     <Content Include="app_paths.json" />
+    <Content Include="clipboard_history.json" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
   </ItemGroup>
