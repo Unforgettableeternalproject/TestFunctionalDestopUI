@@ -31,6 +31,7 @@
     <Compile Include="ui_module\main.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="concept\" />
     <Folder Include="sys_module\" />
     <Folder Include="ui_module\" />
   </ItemGroup>
@@ -39,6 +40,7 @@
     <Content Include=".gitignore" />
     <Content Include="app_paths.json" />
     <Content Include="clipboard_history.json" />
+    <Content Include="concept\To-be-implemented.txt" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
   </ItemGroup>
