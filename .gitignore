@@ -363,7 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Virtual Environments
-env/
+venv/
 .env
 
 # Local files
